@@ -8,9 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
-use Tymon\JWTAuth\Contracts\JWTSubject; //tambah ini, sama intan
-
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -27,8 +25,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    //tambah ini (yang diatas), sama intan
-     
+
     /**
      * The attributes that are mass assignable.
      *
@@ -60,4 +57,15 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function peminjaman()
+    {
+    return $this->hasMany(DataPeminjaman::class);
+    }
+
+    public function laporanPeminjaman()
+    {
+    return $this->hasMany(LaporanPeminjaman::class);
+    }
+
 }

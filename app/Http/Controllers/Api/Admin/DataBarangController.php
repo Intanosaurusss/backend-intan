@@ -1,15 +1,18 @@
 <?php
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\Api\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\DataBarang;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\DataBarangResource;
 
 class DataBarangController extends Controller
 {
     public function index()
     {
-        $dataBarang = DataBarang::all();
-        return view('databarang.index', compact('dataBarang'));
+        $dataBarang = DataBarangResource::collection(DataBarang::all());
+        return response()->json(['data' => $dataBarang], 200);
     }
 
     public function store(Request $request)
@@ -20,16 +23,16 @@ class DataBarangController extends Controller
             'jumlah' => 'required|integer',
         ]);
 
-        DataBarang::create($validatedData);
-        return redirect()->route('databarang.index')->with('success', 'Data barang berhasil ditambahkan.');
+        $dataBarang = DataBarang::create($validatedData);
+        return response()->json(['message' => 'Data barang berhasil ditambahkan.', 'data' => new DataBarangResource($dataBarang)], 201);
     }
 
     public function show(DataBarang $dataBarang)
     {
-        return view('databarang.show', compact('dataBarang'));
+        return response()->json(['data' => new DataBarangResource($dataBarang)], 200);
     }
 
-    public function update(Request $request, DataBarang $dataBarang)
+    public function update(Request $request, $id )
     {
         $validatedData = $request->validate([
             'nama_barang' => 'required|string',
@@ -37,14 +40,24 @@ class DataBarangController extends Controller
             'jumlah' => 'required|integer',
         ]);
 
+        $dataBarang = dataBarang::findOrFail($id);
         $dataBarang->update($validatedData);
-        return redirect()->route('data-barang.index')->with('success', 'Data barang berhasil diperbarui.');
+        return response()->json(['message' => 'Data barang berhasil diperbarui.', 'data' => new DataBarangResource($dataBarang)], 200);
     }
 
-    public function destroy(DataBarang $dataBarang)
+    public function destroy(dataBarang $dataBarang, $id)
     {
-        $dataBarang->delete();
-        return redirect()->route('data-barang.index')->with('success', 'Data barang berhasil dihapus.');
+        $dataBarang = dataBarang::findOrFail($id);
+
+        if ($dataBarang) {
+            $dataBarang->forceDelete();
+            return response()->json([
+                'message' => 'Data Barang berhasil dihapus'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Data Absensi tidak ditemukan'
+            ], 404);
+        }
     }
 }
-

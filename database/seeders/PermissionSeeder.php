@@ -15,10 +15,18 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        //Buat Permission disini tinggal copy past dan ganti nama
+        //Buat Permission disini tinggal copy paste dan ganti nama
         Permission::firstOrCreate(['name' => 'users.create', 'guard_name' => 'api']);
         Permission::firstOrCreate(['name' => 'users.show', 'guard_name' => 'api']);
-
+        Permission::firstOrCreate(['name' => 'databarang.create', 'guard_name' => 'api']);
+        Permission::firstOrCreate(['name' => 'databarang.update', 'guard_name' => 'api']);
+        Permission::firstOrCreate(['name' => 'databarang.destroy', 'guard_name' => 'api']);
+        Permission::firstOrCreate(['name' => 'databarang.show', 'guard_name' => 'api']);
+        
+        Permission::firstOrCreate(['name' => 'dataservis.create', 'guard_name' => 'api']);
+        Permission::firstOrCreate(['name' => 'dataservis.update', 'guard_name' => 'api']);
+        Permission::firstOrCreate(['name' => 'dataservis.destroy', 'guard_name' => 'api']);
+        Permission::firstOrCreate(['name' => 'dataservis.show', 'guard_name' => 'api']);
 
         //ngasih permission ke role yang sudah dibuat
         $adminRole = Role::where('name', 'admin')->first();
