@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\DataPeminjaman;
 use App\Models\LaporanPeminjaman;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PeminjamanController extends Controller
 {
@@ -74,6 +75,14 @@ class PeminjamanController extends Controller
     {
     $laporan_peminjaman = LaporanPeminjaman::where('user_id', $userId)->get();
     return response()->json($laporan_peminjaman);
+    }
+
+    //function untuk generate laporan peminjaman to pdf 
+    public function exportLaporanToPdf()
+    {
+    $laporan_peminjaman = LaporanPeminjaman::all(); // Mengambil semua data laporan peminjaman
+    $pdf = Pdf::loadView('pdf.laporan_peminjaman', compact('laporan_peminjaman'));
+    return $pdf->download('laporan_peminjaman.pdf');
     }
 
 }

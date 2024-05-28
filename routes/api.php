@@ -70,6 +70,8 @@ Route::post('/data_peminjaman/return/{id}', [App\Http\Controllers\Api\Admin\Pemi
 Route::get('/data_peminjaman/show/{userId}', [PeminjamanController::class, 'showByUser']);
 Route::get('/laporan_peminjaman/show/{userId}', [PeminjamanController::class, 'showLaporanByUser']);
 Route::get('/laporan_peminjaman/show', [App\Http\Controllers\Api\Admin\PeminjamanController::class, 'showAllLaporan']);
+Route::get('/laporan_peminjaman/export-pdf', [PeminjamanController::class, 'exportLaporanToPdf'])->name('laporan.peminjaman.exportPdf');
+
 
 
 /**
